@@ -4,7 +4,7 @@ VAR
     var n :INTEGER;
 BEGIN
    REPEAT
-       write ("put the size of the array");
+       write ("Enter the size of the array");
        read (n);
    UNTIL n>1
    return (n);
@@ -20,52 +20,56 @@ BEGIN
     END_FOR
 END
 
+//Read new element
+FUNCTION elem(x:INTEGER) : INTEGER
+VAR
+    s: INTEGER;
+BEGIN
+    REPEAT
+        write("Enter a new element");
+        read(s);
+    UNTIL (s : INTEGER && s>0 )
+    RETURN s ;
+END
+
 //Quick Sorting the Array
-PROCEDURE sort( arr : ARRAY_OF INTEGER)
+PROCEDURE inser(x,n:INTEGER,VAR tab : ARRAY_OF INTEGER)
 VAR
-  // Create an auxiliary stack
-  stack : STACK;
-  p : INTEGER;
+   i,j,max_idx,n,test : INTEGER;
 BEGIN
-   // pushing initial values of l and h to stack
-   stack.push(l);
-   stack.push(h);
-   // keep popping from the stack while is not empty
-   WHILE (NOT stack.isEmpty()) DO
-       // pop h and l
-       h := stack.pop();
-       l := stack.pop();
-       // set pivot element at its correct position
-       // in a sorted array
-       p := partition(arr,l,h);
-       // if there are elements on the right side of the pivot,
-       // then push right side to stack
-       IF (p+1 < h) THEN
-           stack.push(p+1);
-           stack.push(h);
-       END_IF
+   n := tab.length;
+   FOR i FROM n TO 0 STEP 1  DO
+       max_idx := i-1;
+       FOR j  FROM i  TO n-i-2 STEP 1  DO
+           IF (tab[j]<tab[max_idx]) THEN
+               min_idx := j;
+           END_IF
+       END_FOR
+       swap(arr[max_idx],arr[i])
+   END_FOR
+   WHILE (i<n) DO
+       IF (tab[i]!=x)THEN
+            i:=i+1;
+            test:=-1;
+          ELSE
+            test:=i;
+            END_IF
    END_WHILE
-
+   IF (test!=-1) THEN
+       write("we find it ",tab[test]);
+   ELSE
+       write("we cannot find it");
+   END_IF
 END
 
-FUNCTION inser(arr : ARRAY_OF INTEGER, low, high : INTEGER) : INTEGER 
+PROCEDURE swap(VAR xp,yp : INTEGER)
 VAR
-   b,i,pivot : INTEGER;
+   tmp : INTEGER;
 BEGIN
-  pivot := arr[high]; //pivot
-  i := low-1; // index of smaller element
-  FOR i FROM low TO high-1 DO
-       // if the current element is smaller than the pivot
-       IF (arr[i] < pivot) THEN
-           i := i+1;
-           swap(arr[i],arr[i])
-       END_IF
-  END_FOR
-   swap(arr[b+1],arr[i])
-
-   RETURN b+1 ;
+  tmp := xp;
+  xp := yp;
+  yp := tmp;
 END
-
 
 
 ALGORITHM algo 4
@@ -75,7 +79,7 @@ VAR
 BEGIN
     n:= read-size(); //Read the size of the array
     read-ele(n,arr); //Read the elements of the array
-    sort(arr); //Sorting the array
-    arr:= inser(s,arr); //Inserting element in sorted array
+    x:=elem(); //Adding new element
+    inser(x,n,arr); //Inserting element in sorted array
     
 END
